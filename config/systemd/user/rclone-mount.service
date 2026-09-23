@@ -1,0 +1,27 @@
+[Unit]
+Description=rclone Google Drive Mount for Obsidian
+Documentation=https://rclone.org/docs/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rclone mount gdrive: /home/ozymandias/GoogleDrive \
+  --config /home/ozymandias/.config/rclone/rclone.conf \
+  --vfs-cache-mode full \
+  --vfs-cache-max-age 24h \
+  --vfs-cache-max-size 10G \
+  --vfs-read-chunk-size 32M \
+  --vfs-read-chunk-size-limit 2048M \
+  --buffer-size 32M \
+  --dir-cache-time 72h \
+  --drive-chunk-size 16M \
+  --timeout 1m \
+  --log-level INFO \
+  --log-file /home/ozymandias/.config/rclone/rclone-mount.log
+ExecStop=/usr/bin/fusermount3 -u /home/ozymandias/GoogleDrive
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

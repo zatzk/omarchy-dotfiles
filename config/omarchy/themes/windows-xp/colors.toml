@@ -1,0 +1,19 @@
+mode = "light"
+
+accent = "#245dd7"             # Royal Blue
+selection = "#316ac5"          # Selection highlight blue
+muted = "#7f7f7f"
+
+background = "#ece9d8"         # Classic dialog grey/sand
+dark_background = "#d4d0c8"    # Classic window frame grey
+darker_background = "#a0a0a0"
+lighter_background = "#ffffff" # White background for fields
+
+foreground = "#000000"         # Black text
+dark_foreground = "#333333"
+light_foreground = "#555555"
+bright_foreground = "#000000"
+
+green = "#388e3c"              # Start Button Green
+blue = "#245dd7"
+red = "#c1121f"

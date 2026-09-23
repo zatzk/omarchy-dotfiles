@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "xp.tasklist",
+  "name": "Windows XP Tasklist",
+  "version": "1.0.0",
+  "author": "Antigravity",
+  "description": "Lists open windows as classic XP taskbar tabs",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "XP Tasklist",
+    "description": "Lists open windows on the current workspace",
+    "category": "Compositor",
+    "allowMultiple": false
+  }
+}

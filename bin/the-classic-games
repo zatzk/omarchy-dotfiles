@@ -1,0 +1,6 @@
+#!/bin/bash
+export STEAM_COMPAT_CLIENT_INSTALL_PATH="/home/ozymandias/.local/share/Steam"
+export STEAM_COMPAT_DATA_PATH="/home/ozymandias/.local/share/Steam/steamapps/compatdata/the_classic_games"
+mkdir -p "$STEAM_COMPAT_DATA_PATH"
+export WINEDEBUG="+file"
+exec "/home/ozymandias/.local/share/Steam/steamapps/common/Proton - Experimental/proton" run "/home/ozymandias/Games/The Classic Games/launcher/The Classic Games - Launcher.exe" --no-sandbox "$@" 2> "/home/ozymandias/Games/The Classic Games/winedebug_file.log"

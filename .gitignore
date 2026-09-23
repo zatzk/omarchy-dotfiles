@@ -1,0 +1,21 @@
+# Secrets & Credentials
+rclone.conf
+hosts.yml
+*.key
+*.pem
+*.token
+
+# Logs & Runtime
+*.log
+*.tmp
+*.bak
+*.bak.*
+*~
+*.swp
+.DS_Store
+
+# Caches
+__pycache__/
+*.pyc
+.cache/
+node_modules/

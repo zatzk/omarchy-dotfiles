@@ -1,0 +1,7 @@
+# Sample rclone configuration template
+# Replace with your actual credentials using `rclone config`
+[gdrive]
+type = drive
+scope = drive
+token = {"access_token":"YOUR_ACCESS_TOKEN","token_type":"Bearer","refresh_token":"YOUR_REFRESH_TOKEN","expiry":"2026-01-01T00:00:00Z"}
+team_drive = 

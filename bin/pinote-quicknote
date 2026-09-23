@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Directory where fleeting notes are stored
+VAULT_DIR="$HOME/GoogleDrive/Obsidian/Vault/05 - Fleeting"
+mkdir -p "$VAULT_DIR"
+
+# Generate a unique timestamped filename
+TIMESTAMP=$(date +'%Y-%m-%d_%H%M%S')
+NOTE_FILE="$VAULT_DIR/QuickNote-$TIMESTAMP.md"
+
+# Initialize a completely empty file
+touch "$NOTE_FILE"
+
+# Open it with pinote
+if command -v uwsm &> /dev/null; then
+    uwsm-app -- pinote "$NOTE_FILE" &
+else
+    pinote "$NOTE_FILE" &
+fi

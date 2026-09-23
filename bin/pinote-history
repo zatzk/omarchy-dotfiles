@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+VAULT_DIR="$HOME/GoogleDrive/Obsidian/Vault/05 - Fleeting"
+
+# Check if there are any notes
+if [ -z "$(ls -A "$VAULT_DIR"/*.md 2>/dev/null)" ]; then
+    notify-send "No fleeting notes found" "Vault folder is empty." -u low
+    exit 0
+fi
+
+# List all markdown files in the directory sorted by modification time (newest first)
+# We preserve spaces in filenames
+files=$(find "$VAULT_DIR" -maxdepth 1 -name "*.md" -printf "%T@ %f\n" | sort -n -r | cut -d' ' -f2-)
+
+# Show menu using walker in dmenu mode
+selected_note_file=$(echo "$files" | sed 's/\.md$//' | omarchy-launch-walker --dmenu --width 400 -p "Select Note" 2>/dev/null)
+
+# If a file was selected, open it with pinote
+if [ -n "$selected_note_file" ]; then
+    NOTE_PATH="$VAULT_DIR/$selected_note_file.md"
+    if command -v uwsm &> /dev/null; then
+        uwsm-app -- pinote "$NOTE_PATH" &
+    else
+        pinote "$NOTE_PATH" &
+    fi
+fi

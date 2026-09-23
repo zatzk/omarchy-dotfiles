@@ -1,0 +1,6 @@
+[Behavior]
+ActiveByDefault=False
+
+[Hotkey/TriggerKeys]
+0=Control+Alt+space
+

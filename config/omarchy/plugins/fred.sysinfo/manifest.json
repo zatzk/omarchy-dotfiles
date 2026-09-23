@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "fred.sysinfo",
+  "name": "System Information",
+  "version": "1.1.2",
+  "author": "Fred (@greenermoose)",
+  "description": "Comprehensive hardware monitor and system information panel (CPU, thermals, motherboard, memory, storage, I/O)",
+  "repository": "https://github.com/greenermoose/sysinfo-fred-tamlinux",
+  "homepage": "https://github.com/greenermoose/sysinfo-fred-tamlinux",
+  "license": "GPL-3.0-or-later",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "System Information",
+    "description": "Hardware monitor, system details, and thermal sensors",
+    "category": "System",
+    "allowMultiple": false
+  }
+}

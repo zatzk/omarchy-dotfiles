@@ -1,0 +1,11 @@
+[Unit]
+Description=Stremio Flatpak Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/flatpak run com.stremio.Service
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

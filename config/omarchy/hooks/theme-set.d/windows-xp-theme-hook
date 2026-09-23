@@ -1,0 +1,46 @@
+#!/bin/bash
+# Hook triggered on Omarchy theme change.
+# Receives the name of the new theme as $1.
+
+THEME_NAME="$1"
+SHELL_JSON="$HOME/.config/omarchy/shell.json"
+BACKUP_JSON="$HOME/.config/omarchy/shell.json.xp-backup"
+
+if [[ "$THEME_NAME" == "windows-xp" ]]; then
+  # 1. Play the Windows XP Startup Sound asynchronously
+  if [[ -f "$HOME/.config/omarchy/themes/windows-xp/xp-startup.mp3" ]]; then
+    mpv --no-video "$HOME/.config/omarchy/themes/windows-xp/xp-startup.mp3" >/dev/null 2>&1 &
+  fi
+
+  # 2. Back up layout and transition to Windows XP layout
+  if [[ -f "$SHELL_JSON" ]]; then
+    if [[ ! -f "$BACKUP_JSON" ]]; then
+      cp "$SHELL_JSON" "$BACKUP_JSON"
+    fi
+
+    # Restructure shell.json for Windows XP layout:
+    # Left: Start Button (ozymandias.menu) + Window Task List (xp.tasklist)
+    # Center: Empty
+    # Right: Indicators, Tray, Clock
+    jq '.bar.position = "bottom" |
+        .bar.layout.left = [{"id": "ozymandias.menu"}, {"id": "xp.tasklist"}] |
+        .bar.layout.center = [] |
+        .bar.layout.right = [{"id": "omarchy.indicators"}, {"id": "omarchy.tray"}, {"id": "omarchy.clock"}]' \
+        "$BACKUP_JSON" > "${SHELL_JSON}.tmp" && mv "${SHELL_JSON}.tmp" "$SHELL_JSON"
+  fi
+
+  # Restart the shell in the background to apply layout and position shifts instantly
+  omarchy restart shell >/dev/null 2>&1 &
+else
+  # 3. Restore original user layout when changing away from Windows XP theme
+  if [[ -f "$BACKUP_JSON" ]]; then
+    mv "$BACKUP_JSON" "$SHELL_JSON"
+    omarchy restart shell >/dev/null 2>&1 &
+  else
+    # Fallback to defaults if backup is missing
+    if [[ -f "$SHELL_JSON" ]]; then
+      jq '.bar.position = "top"' "$SHELL_JSON" > "${SHELL_JSON}.tmp" && mv "${SHELL_JSON}.tmp" "$SHELL_JSON"
+      omarchy restart shell >/dev/null 2>&1 &
+    fi
+  fi
+fi

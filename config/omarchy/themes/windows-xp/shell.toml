@@ -1,0 +1,67 @@
+# Windows XP Luna shell style overrides
+
+[bar]
+background       = "#245dd7"  # Royal Blue XP taskbar
+background-alpha = 1.0
+text             = "#ffffff"  # White text on taskbar
+active           = "#3c8a3c"  # Olive Green for notifications/alerts (looks like Start button green)
+scale-with-font  = true
+size-horizontal  = 30
+
+[controls]
+# Styles for task buttons representing active windows
+normal-color        = "#ffffff"
+normal-fill-alpha   = 0.12
+normal-border       = "#0053e1"
+normal-border-width = 1
+normal-border-alpha = 0.4
+
+hover-cursor-color        = "#ffffff"
+hover-cursor-fill-alpha   = 0.22
+hover-cursor-border       = "#0053e1"
+hover-cursor-border-width = 1
+
+selected-color        = "#ffffff"
+selected-fill-alpha   = 0.35
+selected-border       = "#003b9f"
+selected-border-width = 1
+
+[menu]
+# Styles for dropdowns and popups (resembling classic menu panels)
+background                = "#ece9d8"  # Sand/gray
+background-alpha          = 1.0
+text                      = "#000000"  # Black text
+border                    = "#245dd7"  # Blue border
+border-alpha              = 1.0
+selected-background       = "#316ac5"  # Selection blue
+selected-background-alpha = 1.0
+selected-text             = "#ffffff"  # White text when selected
+selected-border           = "#316ac5"
+
+[popups]
+background       = "#ece9d8"
+background-alpha = 1.0
+text             = "#000000"
+border           = "#245dd7"
+border-alpha     = 1.0
+
+[notifications]
+background       = "#ece9d8"
+background-alpha = 1.0
+text             = "#000000"
+border           = "#245dd7"
+border-alpha     = 1.0
+
+[lock]
+# Classic Windows XP login screen styling (blue background, white dialog)
+background       = "#5a7edc"
+background-alpha = 1.0
+text             = "#ffffff"
+placeholder      = "#b5c4f1"
+text-error       = "#ff8a8a"
+border           = "#ffffff"
+border-active    = "#ffffff"
+border-error     = "#ff8a8a"
+border-alpha     = 1.0
+selection        = "#316ac5"
+selection-alpha  = 1.0

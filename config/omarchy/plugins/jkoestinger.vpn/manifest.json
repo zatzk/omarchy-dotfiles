@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "jkoestinger.vpn",
+  "name": "VPN",
+  "version": "1.3.0",
+  "author": "Justin",
+  "license": "MIT",
+  "description": "VPN status and switching in the Omarchy bar, across whichever VPN tools are installed.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "VPN",
+    "description": "Detects installed VPN tools (Proton VPN, Mullvad, Windscribe, and NetworkManager's OpenVPN, WireGuard and OpenConnect profiles) and switches between them from one bar icon.",
+    "category": "Network",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "refreshIntervalSec": 15,
+      "preferredBackend": "Auto",
+      "favoriteCountries": "CH,NL,US",
+      "hiddenBackends": ""
+    },
+    "schema": [
+      {
+        "key": "refreshIntervalSec",
+        "type": "integer",
+        "label": "Refresh interval (seconds)",
+        "min": 5,
+        "max": 600,
+        "step": 5,
+        "defaultValue": 15
+      },
+      {
+        "key": "preferredBackend",
+        "type": "enum",
+        "label": "VPN tool shown first",
+        "options": [
+          "Auto",
+          "Proton VPN",
+          "Mullvad",
+          "Windscribe",
+          "NetworkManager"
+        ],
+        "defaultValue": "Auto",
+        "description": "Auto picks whichever detected tool is connected, otherwise the first one found."
+      },
+      {
+        "key": "favoriteCountries",
+        "type": "string",
+        "label": "Favorite countries (comma separated)",
+        "defaultValue": "CH,NL,US",
+        "description": "Two-letter codes for Proton VPN and Mullvad. Windscribe names its regions instead, so it matches full names (\"Switzerland\") and leading words (\"US\" picks up US East, US Central and US West)."
+      },
+      {
+        "key": "hiddenBackends",
+        "type": "string",
+        "label": "Hidden VPN tools (comma separated)",
+        "defaultValue": "",
+        "description": "Tools the widget ignores entirely: proton, mullvad, windscribe, networkmanager. Also editable from the gear inside the panel."
+      }
+    ]
+  }
+}

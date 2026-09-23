@@ -1,0 +1,18 @@
+# Exclude Git files (critical to avoid repository corruption across devices)
+/.git/**
+/.gitignore
+
+# Exclude Syncthing configs
+/.stfolder/**
+
+# Exclude Obsidian layout and workspace state files (main source of conflicts)
+/Vault/.obsidian/workspace.json
+/Vault/.obsidian/workspace-mobile.json
+
+# Exclude cache and obsidian-git runtime files
+/Vault/.obsidian/cache/**
+/Vault/.obsidian/plugins/obsidian-git/**
+
+# OS-specific garbage
+.DS_Store
+Thumbs.db

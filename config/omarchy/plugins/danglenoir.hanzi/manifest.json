@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "danglenoir.hanzi",
+  "name": "Daily Hanzi",
+  "version": "1.0.0",
+  "author": "danglenoir",
+  "license": "MIT",
+  "description": "Learn a new Chinese character every day from the Omarchy bar.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Daily Hanzi",
+    "description": "Shows a daily hanzi with pinyin, meaning, components, and example words.",
+    "category": "Info",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}

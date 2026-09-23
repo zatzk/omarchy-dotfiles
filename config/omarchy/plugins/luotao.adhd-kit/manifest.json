@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "luotao.adhd-kit",
+  "name": "ADHD Kit",
+  "version": "0.3.0",
+  "author": "Luo Tao <luotao@hey.com>",
+  "license": "MIT",
+  "description": "ADHD toolkit for the Omarchy shell: a Time Timer-style visual countdown in the bar, plus an instant quick-capture inbox overlay.",
+  "kinds": [
+    "bar-widget",
+    "overlay",
+    "service"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "barWidget": "TimerWidget.qml",
+    "overlay": "Overlay.qml",
+    "service": "GuardService.qml"
+  },
+  "barWidget": {
+    "displayName": "Visual Timer",
+    "description": "Time Timer-style depleting disc with an mm:ss countdown. Click for presets, pause, extend and cancel; scroll to nudge by a minute.",
+    "category": "Time",
+    "aliases": [
+      "timer",
+      "focus",
+      "pomodoro",
+      "adhd",
+      "time timer",
+      "countdown",
+      "visual timer"
+    ],
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "presets": "5,15,25,45",
+      "showLabel": true
+    },
+    "schema": [
+      {
+        "key": "presets",
+        "type": "string",
+        "label": "Presets (minutes, comma-separated)",
+        "defaultValue": "5,15,25,45"
+      },
+      {
+        "key": "showLabel",
+        "type": "boolean",
+        "label": "Show countdown text next to the disc",
+        "defaultValue": true
+      }
+    ]
+  }
+}

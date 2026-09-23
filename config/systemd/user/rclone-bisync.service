@@ -1,0 +1,13 @@
+[Unit]
+Description=rclone Google Drive Bidirectional Sync for Obsidian
+Documentation=https://rclone.org/docs/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rclone bisync /home/ozymandias/GoogleDrive/Obsidian gdrive:Obsidian \
+  --config /home/ozymandias/.config/rclone/rclone.conf \
+  --exclude-from /home/ozymandias/.config/rclone/bisync-exclude.txt \
+  --log-file /home/ozymandias/.config/rclone/rclone-bisync.log \
+  --log-level INFO

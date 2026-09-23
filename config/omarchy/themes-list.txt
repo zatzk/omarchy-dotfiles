@@ -1,0 +1,8 @@
+# Upstream Git themes installed on this system:
+https://github.com/bjornramberg/omarchy-brutalism-theme
+https://github.com/kalk-ak/omarchy-green-garden-theme.git
+https://github.com/atif-1402/omarchy-latchdark-theme
+https://github.com/atif-1402/omarchy-manga-theme
+https://github.com/HANCORE-linux/omarchy-mechanoonna-theme.git
+https://github.com/atif-1402/omarchy-type17-theme
+https://github.com/mattbbia/venice-from-above.git
