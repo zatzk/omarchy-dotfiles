@@ -25,5 +25,9 @@ require("hypr.autostart")
 -- Toggle config flags dynamically.
 require("default.hypr.toggles")
 
--- Add any other personal Hyprland configuration below.
--- o.window("qemu", { workspace = "5" })
+-- Dusklight cross-game bridge: float at 1920x1080 in background scratchpad
+o.window({ class = "dev.twilitrealm.dusk" }, {
+  float = true,
+  size = "1536 864",
+  workspace = "special:scratchpad",
+})

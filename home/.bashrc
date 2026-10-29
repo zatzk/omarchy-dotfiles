@@ -27,3 +27,6 @@ alias sd-forge="cd /home/ozymandias/sd-forge && bash webui.sh"
 
 
 # Added by Antigravity CLI installer
+
+# opencode
+export PATH=/home/ozymandias/.opencode/bin:$PATH

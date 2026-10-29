@@ -25,12 +25,12 @@
           "id": "robzolkos.github"
         },
         {
-          "id": "mykcib.obsidian-quickedit",
-          "notePath": "QuickNote-2026-09-16_113351.md",
-          "vaultPath": "/home/ozymandias/GoogleDrive/Obsidian/Vault/05 - Fleeting"
+          "id": "omarchy.system-update"
         },
         {
-          "id": "omarchy.system-update"
+          "id": "mykcib.obsidian-quickedit",
+          "notePath": "quicknotes/QuickNote-2026-10-13_142535.md",
+          "vaultPath": "/home/ozymandias/GoogleDrive/Obsidian/Vault/05 - Fleeting/quicknotes"
         }
       ],
       "left": [
@@ -58,7 +58,7 @@
           "scrollSpeed": "1",
           "audioQuality": "320 kbps",
           "searchHistory": "[]",
-          "sessionState": "{\"tab\":\"detail\",\"searchText\":\"\",\"searchType\":\"track\",\"libraryType\":\"albums\",\"homeType\":\"artists\",\"libraryFilter\":\"\",\"librarySort\":\"default\",\"playlistFilter\":\"\",\"playlistSort\":\"default\",\"detailFilter\":\"\",\"detailSort\":\"default\",\"homeFilter\":\"\",\"discoverFilter\":\"\",\"queueFilter\":\"\",\"artistSearchText\":\"\",\"scrollPositions\":{\"home:recent\":0,\"search:track\":0,\"playlist:48EpY9SD473quZEsyAqKOs\":0,\"library:tracks\":0,\"discover\":0,\"detail:spotify:playlist:37i9dQZEVXcG17kCIzTx11\":0,\"detail:spotify:playlist:37i9dQZEVXcVchizEBpQ3h\":1669,\"detail:spotify:artist:26l7d6CNDqVJKOepWtK3Bl\":0,\"home:artists\":0,\"playlist:7Gv4s3MReL0VWw9lBD9zCE\":0,\"playlist:37i9dQZF1EJt9BwL3sJn4w\":0,\"playlist:37i9dQZF1EJHvverU37PSe\":0,\"playlist:37i9dQZF1DZ06evO4BaAkp\":0,\"library:albums\":0,\"detail:spotify:album:0lw68yx3MhKflWFqCsGkIs\":0},\"detailItem\":{\"kind\":\"context\",\"type\":\"album\",\"id\":\"79dL7FLiJFOO0EoehUHQBv\",\"uri\":\"spotify:album:79dL7FLiJFOO0EoehUHQBv\",\"name\":\"Currents\",\"subtitle\":\"Tame Impala · Album · 2015\",\"description\":\"\",\"artists\":[{\"kind\":\"context\",\"type\":\"artist\",\"id\":\"5INjqkS1o8h1imAzPqGZBb\",\"uri\":\"spotify:artist:5INjqkS1o8h1imAzPqGZBb\",\"name\":\"Tame Impala\",\"subtitle\":\"Artist\",\"description\":\"\",\"artists\":[],\"imageUrl\":\"\",\"total\":0,\"releaseType\":\"\",\"releaseDate\":\"\",\"ownerId\":\"\",\"ownerName\":\"\",\"collaborative\":false,\"public\":false,\"snapshotId\":\"\",\"addedAt\":\"\",\"externalUrl\":\"https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb\"}],\"imageUrl\":\"https://i.scdn.co/image/ab67616d00001e029e1cfc756886ac782e363d79\",\"total\":13,\"releaseType\":\"album\",\"releaseDate\":\"2015-07-17\",\"ownerId\":\"\",\"ownerName\":\"\",\"collaborative\":false,\"public\":false,\"snapshotId\":\"\",\"addedAt\":\"\",\"externalUrl\":\"https://open.spotify.com/album/79dL7FLiJFOO0EoehUHQBv\"},\"selectedPlaylistId\":\"37i9dQZF1EJt9BwL3sJn4w\",\"lastRadioPlaylist\":null}"
+          "sessionState": "{\"tab\":\"playlists\",\"searchText\":\"\",\"searchType\":\"track\",\"libraryType\":\"tracks\",\"homeType\":\"recent\",\"libraryFilter\":\"\",\"librarySort\":\"default\",\"playlistFilter\":\"\",\"playlistSort\":\"default\",\"detailFilter\":\"\",\"detailSort\":\"default\",\"homeFilter\":\"\",\"discoverFilter\":\"\",\"queueFilter\":\"\",\"artistSearchText\":\"\",\"scrollPositions\":{\"home:recent\":0,\"discover\":0,\"library:tracks\":0},\"detailItem\":null,\"selectedPlaylistId\":\"5FE4DOdJJgNxdEH6yNI7r1\",\"lastRadioPlaylist\":null}"
         }
       ],
       "right": [

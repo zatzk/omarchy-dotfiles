@@ -31,7 +31,7 @@ Panel {
   readonly property color selectedFill: bar ? Style.selectedFillFor(bar.foreground, Color.accent) : "transparent"
   readonly property string fontFamily: bar ? bar.fontFamily : Style.font.family
 
-  readonly property string vaultPath: Model.expandPath(setting("vaultPath", ""), Quickshell.env("HOME"))
+  readonly property string vaultPath: Model.normalizeVaultPath(Model.expandPath(setting("vaultPath", ""), Quickshell.env("HOME")))
   readonly property string configuredNote: Model.expandPath(setting("notePath", ""), Quickshell.env("HOME"))
 
   // When no vault is configured, look for one on disk (directories carrying
@@ -40,7 +40,7 @@ Panel {
   property bool detectingVaults: false
   property bool detectionStarted: false
   readonly property string detectedVault: detectedVaults.length > 0 ? String(detectedVaults[0]) : ""
-  readonly property string effectiveVault: root.vaultPath !== "" ? root.vaultPath : root.detectedVault
+  readonly property string effectiveVault: Model.normalizeVaultPath(root.vaultPath !== "" ? root.vaultPath : root.detectedVault)
   readonly property bool vaultConfigured: effectiveVault !== ""
 
   // In-panel vault editor: type a path when none is pinned, or edit the
@@ -63,8 +63,10 @@ Panel {
   property bool scanning: false
   property bool rescanQueued: false
   property string filterText: ""
+  property string activeTag: "all"
   property int pickIndex: 0
-  readonly property var pickRows: Model.filterNotes(notes, filterText)
+  readonly property var availableTags: Model.getAvailableTags(notes)
+  readonly property var pickRows: Model.filterNotes(notes, filterText, activeTag)
 
   // ---- editor state
   property bool editing: false
@@ -75,8 +77,11 @@ Panel {
   property bool saveFailedState: false
   property bool justSaved: false
   property bool syncingText: false
+  property string moveNotice: ""
+  property bool movingNote: false
+  property string moveTargetRel: ""
 
-  readonly property string editPath: editRel === "" ? "" : Model.joinPath(effectiveVault, editRel)
+  readonly property string editPath: editRel === "" ? "" : Model.joinPath(effectiveVault, (editRel.indexOf("/") === -1 ? "quicknotes/" + editRel : editRel))
 
   // ---------------------------------------------------------------- lifecycle
 
@@ -107,6 +112,7 @@ Panel {
       root.pickIndex = 0
       root.justSaved = false
       root.saveFailedState = false
+      root.moveNotice = ""
     }
   }
 
@@ -120,6 +126,9 @@ Panel {
     }
     var next = Model.toRel(root.effectiveVault, root.configuredNote)
     if (next !== "") {
+      if (next.indexOf("/") === -1 && next.endsWith(".md")) {
+        next = "quicknotes/" + next
+      }
       root.editRel = next
       root.pinDetectedVaultIfUsed()
       root.beginEdit()
@@ -210,13 +219,14 @@ Panel {
   function pinDetectedVaultIfUsed() {
     if (String(root.settings.vaultPath || "") !== "") return
     if (root.detectedVault === "") return
-    root.persistEntry({ vaultPath: root.detectedVault })
+    root.persistEntry({ vaultPath: Model.normalizeVaultPath(root.detectedVault) })
   }
 
   function persistNote(rel) {
     if (rel === "") return
+    var v = String(root.settings.vaultPath || "") !== "" ? root.settings.vaultPath : root.detectedVault
     root.persistEntry({
-      vaultPath: String(root.settings.vaultPath || "") !== "" ? root.settings.vaultPath : root.detectedVault,
+      vaultPath: Model.normalizeVaultPath(v),
       notePath: rel
     })
   }
@@ -224,7 +234,7 @@ Panel {
   // The raw string is stored so ~ and $HOME expand on every read, like the
   // settings form does.
   function persistVault(raw) {
-    root.persistEntry({ vaultPath: raw })
+    root.persistEntry({ vaultPath: Model.normalizeVaultPath(raw) })
   }
 
   function startVaultEdit() {
@@ -254,7 +264,7 @@ Panel {
   function commitVault() {
     var raw = String(vaultField.text || "").trim()
     if (raw === "") return
-    var expanded = Model.expandPath(raw, Quickshell.env("HOME"))
+    var expanded = Model.normalizeVaultPath(Model.expandPath(raw, Quickshell.env("HOME")))
     if (expanded !== root.effectiveVault) {
       // A different vault invalidates the note picked from the old one.
       root.editRel = ""
@@ -264,7 +274,7 @@ Panel {
     root.filterText = ""
     root.pickIndex = 0
     root.notes = []
-    root.persistVault(raw)
+    root.persistVault(expanded)
     root.editingVaultPath = false
     root.loadNotes()
     root.focusPicker()
@@ -379,6 +389,54 @@ Panel {
     onTriggered: root.justSaved = false
   }
 
+  Process {
+    id: moveNoteProc
+    onExited: function(code) {
+      root.movingNote = false
+      if (code === 0) {
+        var oldConfiguredRel = Model.toRel(root.effectiveVault, root.configuredNote)
+        var oldEditRel = root.editRel
+        root.editRel = root.moveTargetRel
+        if (oldEditRel === oldConfiguredRel || ("quicknotes/" + oldEditRel) === oldConfiguredRel) {
+          root.persistNote(root.moveTargetRel)
+        }
+        root.loadNotes()
+        root.moveNotice = "Moved to " + Model.tagLabel(Model.getTag(root.moveTargetRel))
+        moveFlashTimer.restart()
+      } else {
+        root.vaultPendingError = "Failed to move note"
+      }
+    }
+  }
+
+  Timer {
+    id: moveFlashTimer
+    interval: 2000
+    onTriggered: root.moveNotice = ""
+  }
+
+  function moveNoteToTag(newTag) {
+    if (root.editRel === "" || root.movingNote) return
+    var curTag = Model.getTag(root.editRel)
+    if (curTag === newTag) return
+
+    if (root.dirty) {
+      root.saveNote()
+    }
+
+    var filename = Model.getFilename(root.editRel)
+    var newRel = Model.buildRelPath(newTag, filename)
+    root.moveTargetRel = newRel
+
+    var actualOldRel = root.editRel.indexOf("/") === -1 ? "quicknotes/" + root.editRel : root.editRel
+    var oldFullPath = Model.joinPath(root.effectiveVault, actualOldRel)
+    var newFullPath = Model.joinPath(root.effectiveVault, newRel)
+
+    root.movingNote = true
+    moveNoteProc.command = ["bash", "-c", "mkdir -p \"$(dirname \"$2\")\" && mv \"$1\" \"$2\"", "_", oldFullPath, newFullPath]
+    moveNoteProc.running = true
+  }
+
   property string newNotePendingRel: ""
 
   Process {
@@ -395,16 +453,12 @@ Panel {
   }
 
   function createNewNote() {
-    var folder = ""
-    var rel = root.pickRel(root.pickIndex)
-    if (rel !== "") {
-      folder = Model.getDirectory(rel)
-    }
+    var folder = root.activeTag !== "" && root.activeTag !== "all" ? root.activeTag : "quicknotes"
     var title = "QuickNote-" + Qt.formatDateTime(new Date(), "yyyy-MM-dd_HHmmss")
-    var newRel = (folder !== "" ? folder + "/" : "") + title + ".md"
+    var newRel = folder + "/" + title + ".md"
     root.newNotePendingRel = newRel
     var fullPath = Model.joinPath(root.effectiveVault, newRel)
-    createNoteProc.command = ["touch", fullPath]
+    createNoteProc.command = ["bash", "-c", "mkdir -p \"$(dirname \"$1\")\" && touch \"$1\"", "_", fullPath]
     createNoteProc.running = true
   }
 
@@ -669,6 +723,41 @@ Panel {
               }
             }
 
+            // Tag filter bar
+            Flickable {
+              visible: root.vaultConfigured
+              width: parent.width
+              height: tagFilterRow.implicitHeight
+              contentWidth: tagFilterRow.implicitWidth
+              flickableDirection: Flickable.HorizontalFlick
+              clip: true
+              boundsBehavior: Flickable.StopAtBounds
+
+              Row {
+                id: tagFilterRow
+                spacing: Style.space(6)
+
+                Repeater {
+                  model: ["all"].concat(root.availableTags)
+                  delegate: Button {
+                    required property string modelData
+                    text: Model.tagLabel(modelData)
+                    selected: root.activeTag === modelData
+                    bordered: true
+                    fontSize: Style.font.caption
+                    verticalPadding: Style.space(3)
+                    horizontalPadding: Style.space(8)
+                    foreground: root.fg
+                    fontFamily: root.fontFamily
+                    onClicked: {
+                      root.activeTag = modelData
+                      root.pickIndex = 0
+                    }
+                  }
+                }
+              }
+            }
+
             Column {
               visible: root.vaultConfigured
               width: parent.width
@@ -709,15 +798,37 @@ Panel {
                     Text {
                       id: rowText
                       anchors.left: parent.left
-                      anchors.right: parent.right
+                      anchors.right: tagBadge.left
                       anchors.verticalCenter: parent.verticalCenter
                       anchors.leftMargin: Style.space(8)
-                      anchors.rightMargin: deleteButton.visible ? Style.space(36) : Style.space(8)
+                      anchors.rightMargin: Style.space(6)
                       text: modelData.label
                       color: root.pickIndex === index ? Style.selectedStateColor(root.fg, Color.accent) : root.fg
                       font.family: root.fontFamily
                       font.pixelSize: Style.font.body
                       elide: Text.ElideMiddle
+                    }
+
+                    Rectangle {
+                      id: tagBadge
+                      anchors.right: parent.right
+                      anchors.rightMargin: deleteButton.visible ? Style.space(36) : Style.space(8)
+                      anchors.verticalCenter: parent.verticalCenter
+                      height: tagBadgeText.implicitHeight + Style.space(4)
+                      width: tagBadgeText.implicitWidth + Style.space(8)
+                      radius: Style.cornerRadius
+                      color: root.pickIndex === index
+                        ? Qt.rgba(root.fg.r, root.fg.g, root.fg.b, 0.15)
+                        : Qt.rgba(root.fg.r, root.fg.g, root.fg.b, 0.08)
+
+                      Text {
+                        id: tagBadgeText
+                        anchors.centerIn: parent
+                        text: Model.tagLabel(modelData.tag)
+                        color: root.pickIndex === index ? root.fg : root.dim
+                        font.family: root.fontFamily
+                        font.pixelSize: Style.font.caption
+                      }
                     }
                   }
 
@@ -832,6 +943,56 @@ Panel {
               }
             }
 
+            // Tag switcher for current note
+            RowLayout {
+              visible: !root.loadingNote && !root.noteMissing && root.editRel !== ""
+              width: parent.width
+              spacing: Style.space(8)
+
+              Text {
+                text: "Tag:"
+                color: root.dim
+                font.family: root.fontFamily
+                font.pixelSize: Style.font.caption
+                Layout.alignment: Qt.AlignVCenter
+              }
+
+              Flickable {
+                Layout.fillWidth: true
+                height: editorTagRow.implicitHeight
+                contentWidth: editorTagRow.implicitWidth
+                flickableDirection: Flickable.HorizontalFlick
+                clip: true
+                boundsBehavior: Flickable.StopAtBounds
+
+                Row {
+                  id: editorTagRow
+                  spacing: Style.space(6)
+
+                  Repeater {
+                    model: root.availableTags
+                    delegate: Button {
+                      required property string modelData
+                      readonly property bool isCurrent: Model.getTag(root.editRel) === modelData
+                      text: (isCurrent ? "✓ " : "") + Model.tagLabel(modelData)
+                      selected: isCurrent
+                      bordered: true
+                      fontSize: Style.font.caption
+                      verticalPadding: Style.space(3)
+                      horizontalPadding: Style.space(8)
+                      foreground: root.fg
+                      fontFamily: root.fontFamily
+                      onClicked: {
+                        if (!isCurrent) {
+                          root.moveNoteToTag(modelData)
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
             ScrollView {
               id: editorScroll
               visible: !root.loadingNote && !root.noteMissing
@@ -918,11 +1079,15 @@ Panel {
               Text {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
-                text: root.saveFailedState ? "Save failed"
+                text: root.moveNotice !== "" ? root.moveNotice
+                  : root.movingNote ? "Moving note…"
+                  : root.saveFailedState ? "Save failed"
                   : root.dirty ? "Unsaved changes"
                   : root.justSaved ? "Saved"
                   : "Ctrl+S to save"
-                color: root.saveFailedState ? root.urgent : (root.dirty ? root.fg : root.dim)
+                color: root.moveNotice !== "" ? (bar ? bar.accent : Color.accent)
+                  : root.saveFailedState ? root.urgent
+                  : (root.dirty ? root.fg : root.dim)
                 font.family: root.fontFamily
                 font.pixelSize: Style.font.bodySmall
                 elide: Text.ElideRight

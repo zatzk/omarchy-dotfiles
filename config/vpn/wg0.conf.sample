@@ -1,0 +1,10 @@
+[Interface]
+# Replace <INSERT_PRIVATE_KEY_HERE> with your WireGuard private key
+PrivateKey = <INSERT_PRIVATE_KEY_HERE>
+Address = 10.10.15.22/32
+ListenPort = 21841
+
+[Peer]
+PublicKey = DGd4qaXbVS8zSNDCo100wJ6z+ouAUcChktHpSoRy9Ao=
+Endpoint = hjd0aamsmk4.sn.mynetname.net:54712
+AllowedIPs = 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8, 172.180.1.78/32

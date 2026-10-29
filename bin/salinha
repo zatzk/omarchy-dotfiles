@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+APPDIR="/home/ozymandias/Applications/Salinha"
+
+export PATH="${APPDIR}:${APPDIR}/usr/sbin${PATH:+:${PATH}}"
+export LD_LIBRARY_PATH="${APPDIR}/usr/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+export XDG_DATA_DIRS="${APPDIR}/usr/share/${XDG_DATA_DIRS:+:${XDG_DATA_DIRS}}:/usr/local/share/:/usr/share/"
+export GSETTINGS_SCHEMA_DIR="${APPDIR}/usr/share/glib-2.0/schemas${GSETTINGS_SCHEMA_DIR:+:${GSETTINGS_SCHEMA_DIR}}"
+
+# Unset APPIMAGE so startup does not block on synchronous update checks before showing the window
+unset APPIMAGE
+
+# Use native Intel Mesa + iHD VA-API on the Wayland compositor GPU (renderD129) instead of conflicting NVIDIA env vars
+unset NVD_BACKEND
+export LIBVA_DRIVER_NAME=iHD
+export __GLX_VENDOR_LIBRARY_NAME=mesa
+export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json
+
+exec "${APPDIR}/salinha" --no-sandbox "$@"

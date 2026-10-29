@@ -4,6 +4,9 @@ hosts.yml
 *.key
 *.pem
 *.token
+wg0.conf
+*.nmconnection
+!*.sample
 
 # Logs & Runtime
 *.log

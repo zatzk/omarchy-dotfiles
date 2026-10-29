@@ -27,7 +27,7 @@
 	enabled = true           # Record and reuse conflict resolutions
 	autoupdate = true        # Apply stored conflict resolutions automatically
 [user]
-	name = zatzk
+	name = Jean Luiz
 	email = zatzk@outlook.com
 [credential]
 	helper = store

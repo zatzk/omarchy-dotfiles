@@ -4,6 +4,8 @@ aether
 ai-usagebar-bin
 alacritty
 alsa-utils
+android-tools
+anki
 antigravity
 antigravity-cli
 antigravity-ide
@@ -37,10 +39,13 @@ ddcutil
 docker
 docker-buildx
 docker-compose
+dolphin-emu
+doppler-cli
 dosfstools
 dotnet-runtime
 dotnet-runtime-9.0
 dua-cli
+dusklight-bin
 easyeffects
 eden-bin
 editt-bin
@@ -127,6 +132,7 @@ man-db
 mariadb-libs
 mesen-ce
 minecraft-launcher
+mingw-w64-gcc
 mise-bin
 mongodb-compass-bin
 moonlight-qt
@@ -194,6 +200,7 @@ rime-ice-pinyin-git
 ripgrep
 ruby
 rust
+rustdesk-bin
 sddm
 signal-desktop
 slurp

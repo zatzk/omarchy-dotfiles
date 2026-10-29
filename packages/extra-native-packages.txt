@@ -1,12 +1,15 @@
 1password
 1password-cli
 alacritty
+android-tools
+anki
 bind
 clamav
 code
 cuda
 cudnn
 cursor-bin
+dolphin-emu
 dotnet-runtime-9.0
 easyeffects
 efibootmgr
@@ -25,6 +28,7 @@ linux
 linux-headers
 llmfit
 minecraft-launcher
+mingw-w64-gcc
 nano
 neovim
 network-manager-applet
@@ -71,3 +75,4 @@ wireguard-tools
 xmlstarlet
 yq
 zed
+zen-browser-bin

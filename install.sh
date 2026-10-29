@@ -39,6 +39,7 @@ MODE_ALL=false
 MODE_CONFIG=false
 MODE_PACKAGES=false
 MODE_THEMES=false
+MODE_VPN=false
 MODE_SYMLINK=false
 DRY_RUN=false
 
@@ -59,6 +60,10 @@ parse_args() {
         ;;
       --themes)
         MODE_THEMES=true
+        shift
+        ;;
+      --vpn)
+        MODE_VPN=true
         shift
         ;;
       --symlink)
@@ -90,10 +95,11 @@ Usage:
   ./install.sh [OPTIONS]
 
 Options:
-  --all          Install configs, plugins, scripts, themes, and packages
+  --all          Install configs, plugins, scripts, themes, packages, and run VPN helper
   --config-only  Restore only configuration files, plugins, and scripts (default in non-interactive)
   --packages     Install extra native & AUR packages (requires yay/pacman)
   --themes       Install extra upstream git themes via omarchy theme install
+  --vpn          Configure WireGuard (wg0) and check VPN/Tailscale prerequisites
   --symlink      Create symlinks to dotfiles instead of copying files
   --dry-run      Print actions without modifying the filesystem
   -h, --help     Show this help message
@@ -152,6 +158,7 @@ restore_configs() {
   # 1. ~/.config entries
   for item in "$SCRIPT_DIR"/config/*; do
     local base="$(basename "$item")"
+    [[ "$base" == "vpn" ]] && continue
     info "Installing config: $base"
     sync_item "$item" "$HOME/.config/$base"
   done
@@ -297,6 +304,19 @@ restore_packages() {
   fi
 }
 
+restore_vpn() {
+  heading "Configuring VPN & Network"
+  if [[ -f "$SCRIPT_DIR/config/vpn/setup-vpn.sh" ]]; then
+    if [[ "$DRY_RUN" == true ]]; then
+      info "[dry-run] Would execute VPN setup helper: $SCRIPT_DIR/config/vpn/setup-vpn.sh"
+    else
+      bash "$SCRIPT_DIR/config/vpn/setup-vpn.sh" || warn "VPN setup completed with warnings."
+    fi
+  else
+    warn "No setup-vpn.sh found."
+  fi
+}
+
 reload_system() {
   heading "Reloading System Components"
 
@@ -309,6 +329,10 @@ reload_system() {
   if command -v systemctl >/dev/null 2>&1; then
     info "Reloading systemd user daemon..."
     systemctl --user daemon-reload || true
+    systemctl --user try-restart wireplumber >/dev/null 2>&1 || true
+    if [[ -f "$HOME/.config/systemd/user/rclone-bisync.timer" ]]; then
+      systemctl --user enable --now rclone-bisync.timer >/dev/null 2>&1 || true
+    fi
   fi
 
   # Rescan shell plugins
@@ -344,13 +368,14 @@ interactive_menu() {
   echo -e "Omarchy Quattro Dotfiles Installer\n"
 
   echo "Select installation mode:"
-  echo "  1) Complete Restore (Configs, Plugins, Themes, and Packages) [Recommended]"
+  echo "  1) Complete Restore (Configs, Plugins, Themes, Packages, and VPN) [Recommended]"
   echo "  2) Configs & Plugins Only (No package installs)"
   echo "  3) Extra Packages Only (Install pacman/AUR software)"
   echo "  4) Upstream Themes Only"
-  echo "  5) Exit"
+  echo "  5) VPN & WireGuard Setup Only"
+  echo "  6) Exit"
   echo ""
-  read -rp "Enter choice [1-5]: " choice
+  read -rp "Enter choice [1-6]: " choice
 
   case "$choice" in
     1)
@@ -364,6 +389,9 @@ interactive_menu() {
       ;;
     4)
       MODE_THEMES=true
+      ;;
+    5)
+      MODE_VPN=true
       ;;
     *)
       info "Aborted by user."
@@ -381,12 +409,12 @@ main() {
   parse_args "$@"
 
   # If dry-run without a specific mode, default to all modes
-  if [[ "$DRY_RUN" == true && "$MODE_ALL" == false && "$MODE_CONFIG" == false && "$MODE_PACKAGES" == false && "$MODE_THEMES" == false ]]; then
+  if [[ "$DRY_RUN" == true && "$MODE_ALL" == false && "$MODE_CONFIG" == false && "$MODE_PACKAGES" == false && "$MODE_THEMES" == false && "$MODE_VPN" == false ]]; then
     MODE_ALL=true
   fi
 
   # If no flags passed, enter interactive mode
-  if [[ "$MODE_ALL" == false && "$MODE_CONFIG" == false && "$MODE_PACKAGES" == false && "$MODE_THEMES" == false ]]; then
+  if [[ "$MODE_ALL" == false && "$MODE_CONFIG" == false && "$MODE_PACKAGES" == false && "$MODE_THEMES" == false && "$MODE_VPN" == false ]]; then
     if [[ -t 0 ]]; then
       interactive_menu
     else
@@ -406,6 +434,10 @@ main() {
 
   if [[ "$MODE_ALL" == true || "$MODE_PACKAGES" == true ]]; then
     restore_packages
+  fi
+
+  if [[ "$MODE_ALL" == true || "$MODE_VPN" == true ]]; then
+    restore_vpn
   fi
 
   reload_system

@@ -57,9 +57,14 @@ inode/directory=org.gnome.Nautilus.desktop
 x-scheme-handler/discord=vesktop.desktop
 x-scheme-handler/antigravity=antigravity.desktop
 x-scheme-handler/apidog=apidog.desktop
+x-scheme-handler/discord-455712169795780630=discord-455712169795780630.desktop
+x-scheme-handler/mongodb=mongodb-compass.desktop
+x-scheme-handler/mongodb+srv=mongodb-compass.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;
 x-scheme-handler/https=zen.desktop;
 text/html=zen.desktop;
 x-scheme-handler/chrome=zen.desktop;
+x-scheme-handler/mongodb=mongodb-compass.desktop;
+x-scheme-handler/mongodb+srv=mongodb-compass.desktop;

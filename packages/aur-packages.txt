@@ -3,6 +3,8 @@ antigravity
 antigravity-cli
 antigravity-ide
 apidog-bin
+doppler-cli
+dusklight-bin
 eden-bin
 editt-bin
 electron33-bin
@@ -15,6 +17,7 @@ postman-bin
 proton-ge-custom-bin
 redisinsight-bin
 rime-ice-pinyin-git
+rustdesk-bin
 spicetify-cli
 spicetify-marketplace-bin
 stremio-web-desktop-bin
@@ -24,4 +27,3 @@ windsurf-electron-latest
 wireguird
 wireguird-debug
 yaak-bin
-zen-browser-bin
