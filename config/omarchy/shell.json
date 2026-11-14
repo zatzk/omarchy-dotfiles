@@ -29,8 +29,8 @@
         },
         {
           "id": "mykcib.obsidian-quickedit",
-          "notePath": "quicknotes/QuickNote-2026-10-13_142535.md",
-          "vaultPath": "/home/ozymandias/GoogleDrive/Obsidian/Vault/05 - Fleeting/quicknotes"
+          "notePath": "quicknotes/QuickNote-2026-11-05_123513.md",
+          "vaultPath": "/home/ozymandias/GoogleDrive/Obsidian/Vault/05 - Fleeting"
         }
       ],
       "left": [
@@ -58,12 +58,15 @@
           "scrollSpeed": "1",
           "audioQuality": "320 kbps",
           "searchHistory": "[]",
-          "sessionState": "{\"tab\":\"playlists\",\"searchText\":\"\",\"searchType\":\"track\",\"libraryType\":\"tracks\",\"homeType\":\"recent\",\"libraryFilter\":\"\",\"librarySort\":\"default\",\"playlistFilter\":\"\",\"playlistSort\":\"default\",\"detailFilter\":\"\",\"detailSort\":\"default\",\"homeFilter\":\"\",\"discoverFilter\":\"\",\"queueFilter\":\"\",\"artistSearchText\":\"\",\"scrollPositions\":{\"home:recent\":0,\"discover\":0,\"library:tracks\":0},\"detailItem\":null,\"selectedPlaylistId\":\"5FE4DOdJJgNxdEH6yNI7r1\",\"lastRadioPlaylist\":null}"
+          "sessionState": "{\"tab\":\"detail\",\"searchText\":\"\",\"searchType\":\"track\",\"libraryType\":\"tracks\",\"homeType\":\"recent\",\"libraryFilter\":\"\",\"librarySort\":\"default\",\"playlistFilter\":\"\",\"playlistSort\":\"default\",\"detailFilter\":\"\",\"detailSort\":\"default\",\"homeFilter\":\"\",\"discoverFilter\":\"\",\"queueFilter\":\"\",\"artistSearchText\":\"\",\"scrollPositions\":{\"home:recent\":0,\"discover\":0},\"detailItem\":{\"kind\":\"context\",\"type\":\"playlist\",\"id\":\"37i9dQZEVXcVchizEBpQ3h\",\"uri\":\"spotify:playlist:37i9dQZEVXcVchizEBpQ3h\",\"name\":\"Discover Weekly\",\"subtitle\":\"Spotify\",\"description\":\"Your shortcut to hidden gems, deep cuts, and future faves, updated every Monday. You’ll know when you hear it.\",\"artists\":[],\"imageUrl\":\"https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/dw/cover/en\",\"total\":30,\"releaseType\":\"\",\"releaseDate\":\"\",\"ownerId\":\"spotify\",\"ownerName\":\"Spotify\",\"collaborative\":false,\"public\":true,\"snapshotId\":\"auf8sAAAAADTWrR0OZiBfrxv3N8nfN0q\",\"addedAt\":\"\",\"externalUrl\":\"https://open.spotify.com/playlist/37i9dQZEVXcVchizEBpQ3h\"},\"selectedPlaylistId\":\"\",\"lastRadioPlaylist\":null}"
         }
       ],
       "right": [
         {
           "id": "omarchy.tray"
+        },
+        {
+          "id": "ozymandias.harpocrates"
         },
         {
           "id": "luotao.adhd-kit"
@@ -92,7 +95,7 @@
       ]
     },
     "position": "top",
-    "transparent": false
+    "transparent": true
   },
   "idle": {
     "lock": 300,

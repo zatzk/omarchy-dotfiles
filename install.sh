@@ -200,6 +200,20 @@ restore_configs() {
     find "$HOME/.config/omarchy/hooks" -type f -exec chmod +x {} + 2>/dev/null || true
   fi
 
+  # 6. Install Harpocrates backend if uv is available and CLI is missing
+  if [[ "$DRY_RUN" == false && ! -x "$HOME/.local/bin/harpocrates" ]] && command -v uv >/dev/null 2>&1 && command -v git >/dev/null 2>&1; then
+    local harpo_dir="$HOME/MyProjects/harpocrates"
+    if [[ ! -d "$harpo_dir" ]]; then
+      info "Cloning Harpocrates voice notes backend..."
+      mkdir -p "$HOME/MyProjects"
+      git clone --depth=1 https://github.com/zatzk/harpocrates.git "$harpo_dir" || warn "Could not clone harpocrates"
+    fi
+    if [[ -d "$harpo_dir" ]]; then
+      info "Setting up Harpocrates Python environment..."
+      (cd "$harpo_dir" && uv sync) && mkdir -p "$HOME/.local/bin" && ln -sf "$harpo_dir/.venv/bin/harpocrates" "$HOME/.local/bin/harpocrates" || warn "Harpocrates setup skipped"
+    fi
+  fi
+
   if [[ -d "$BACKUP_DIR" ]]; then
     success "Backup of replaced configurations saved to: $BACKUP_DIR"
   fi

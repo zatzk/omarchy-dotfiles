@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "ozymandias.harpocrates",
+  "name": "Harpocrates Voice Notes",
+  "version": "0.1.0",
+  "author": "ozymandias",
+  "description": "Start/stop local meeting and video transcription and watch live Obsidian Markdown notes.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Harpocrates",
+    "description": "Local meeting & video voice-to-notes",
+    "category": "Productivity",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "outputDir": "",
+      "model": "small"
+    },
+    "schema": [
+      {
+        "key": "outputDir",
+        "type": "path",
+        "label": "Notes output folder",
+        "defaultValue": "",
+        "description": "Optional override folder where Markdown voice notes are saved."
+      },
+      {
+        "key": "model",
+        "type": "string",
+        "label": "Whisper model size",
+        "defaultValue": "small",
+        "description": "faster-whisper model size (tiny, base, small, medium, large-v3-turbo)."
+      }
+    ]
+  }
+}

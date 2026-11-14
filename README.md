@@ -29,10 +29,11 @@ git clone https://github.com/zatzk/dotfiles.git ~/dotfiles && ~/dotfiles/install
 ## 📦 What's Included
 
 ### 1. Omarchy Shell & Plugins (`config/omarchy/`)
-All shell settings and 13 bar/overlay plugins are tracked directly with all custom edits preserved:
+All shell settings and 14 bar/overlay plugins are tracked directly with all custom edits preserved:
 
 | Plugin ID | Name | Highlights / Customizations |
 | :--- | :--- | :--- |
+| `ozymandias.harpocrates` | **Harpocrates Voice Notes** | Sticky always-on-top bar widget & panel for real-time local transcription (`faster-whisper` + PipeWire) into Obsidian Markdown notes, with Meeting (PT/EN) & Video (EN) modes, note resume, and on-demand Ollama summaries (`github.com/zatzk/harpocrates`). |
 | `mykcib.obsidian-quickedit` | **Obsidian Quick Note** | Enhanced with tag switcher (`quicknotes`, `mnemosyne/inbox`), note moving, vault path normalization, smooth auto-scrolling textarea (`ensureCursorVisible`), mouse wheel handling, and Quick Note creation (`Super+N`). |
 | `community.cn-input` | **Chinese Input** | Customized trigger hotkey `Ctrl+Alt+Space` with Fcitx5 and Rime Ice pinyin. |
 | `ozymandias.menu` | **My Omarchy Menu** | Custom categorized Quickshell application launcher and system menu. |
