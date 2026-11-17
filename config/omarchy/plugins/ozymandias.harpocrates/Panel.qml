@@ -257,12 +257,12 @@ Panel {
     readonly property string barPos: root.bar ? root.bar.position : "top"
     readonly property real screenW: screen ? screen.width : 0
     readonly property real screenH: screen ? screen.height : 0
-    readonly property real barW: anchorWindow ? anchorWindow.width : 0
-    readonly property real barH: anchorWindow ? anchorWindow.height : 0
+    readonly property real barThickness: !root.bar ? 0
+      : (typeof root.bar.barSizeFor === "function" && screen ? root.bar.barSizeFor(screen.name) : root.bar.barSize)
     readonly property int margin: Style.gapsOut
     readonly property int gap: Style.gapsOut
     readonly property int cardWidth: Math.min(Style.space(470), Math.max(240, screenW - margin * 2))
-    readonly property int cardHeight: Math.min(contentCol.implicitHeight + card.padding * 2 + Border.top(card.borderSpec) + Border.bottom(card.borderSpec), Math.max(240, screenH - barH - gap - margin))
+    readonly property int cardHeight: Math.min(contentCol.implicitHeight + card.padding * 2 + Border.top(card.borderSpec) + Border.bottom(card.borderSpec), Math.max(240, screenH - barThickness - gap - margin))
 
     property point anchorPos: Qt.point(0, 0)
 
@@ -274,22 +274,22 @@ Panel {
 
     readonly property point cardOrigin: {
       var x = screenW - cardWidth - margin
-      var y = barH + gap
+      var y = barThickness + gap
       if (root.anchorItem && root.bar) {
         var aw = root.anchorItem.width
         var ah = root.anchorItem.height
         if (barPos === "bottom") {
           x = anchorPos.x + aw / 2 - cardWidth / 2
-          y = screenH - barH - cardHeight - gap
+          y = screenH - barThickness - cardHeight - gap
         } else if (barPos === "left") {
-          x = barW + gap
+          x = barThickness + gap
           y = anchorPos.y + ah / 2 - cardHeight / 2
         } else if (barPos === "right") {
-          x = screenW - barW - cardWidth - gap
+          x = screenW - barThickness - cardWidth - gap
           y = anchorPos.y + ah / 2 - cardHeight / 2
         } else {
           x = anchorPos.x + aw / 2 - cardWidth / 2
-          y = barH + gap
+          y = barThickness + gap
         }
       }
       x = Math.max(margin, Math.min(x, screenW - cardWidth - margin))
